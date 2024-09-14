@@ -1,0 +1,83 @@
+
+
+Atari MOUSE Driver Software
+
+The MOUSE driver software allows you to use your mouse to
+operate programs which were designed to be compatible with a
+Microsoft mouse. You can use your mouse to operate programs such
+as Microsoft Word, Borland's Reflex, LCS/Telegraphics'
+TeleVision, and many others.
+
+An industry standard has evolved for mouse driven programs, and
+every significant mouse based program uses a separate interface
+program, called a mouse driver, to communicate with the mouse.
+The mouse driver is a program that is loaded once, after you load
+DOS, and it remains in memory until you re-boot your computer or
+turn it off.
+
+The mouse driver program's functions were originally defined by
+MicroSoft. Atari's MOUSE driver provides the exact same functionality as
+Microsoft's mouse driver MOUSE.COM.
+
+The driver software has two main areas of functionality:
+
+1) Returning "mouse" coordinates and button status to the
+applications program.
+
+2) Drawing and maintaining a tracking cursor that will follow the
+motion of the tablet cursor or stylus.
+
+
+Normally the operation of the driver will be transparent to you.
+All you have to do is ensure that the driver is loaded before you
+run the applications that use it.
+
+
+Loading the Atari MOUSE Driver:
+
+MOUSE can be loaded two ways. The simplest way is to run the
+program MOUSE.COM. 
+
+   A>MOUSE
+
+MOUSE will print a message confirming that it is loaded.
+
+The mouse hardware normally uses interrupt 3. This interrupt is also
+used by modems and serial ports set to be COM2. In order to allow use
+of interrupt 3 by other hardware devices the Atari MOUSE driver includes
+an option to use the video interrupt for mouse interrupts. To choose
+this option type:
+
+	A>MOUSE /V
+
+You must reload the driver to change between the two interrupt sources.
+
+
+Once the mouse driver is loaded into memory you are ready to use
+your applications program. If you have a hard disk drive you will
+probably want to copy MOUSE.COM onto your hard disk. Since you
+only need to load MOUSE when you boot up your computer many
+people add the MOUSE command to their AUTOEXEC.BAT file so the
+driver is loaded automatically whenever they start using their
+computer.
+
+MOUSE will remain in memory, ready for use by any applications
+program, until you either reboot or turn off your computer.
+Remember though that if you reboot an applications disk you will
+have to reload MOUSE.
+
+The second way to load MOUSE is by including MOUSE.SYS as a
+device driver in your CONFIG.SYS file. This method will have a
+result that is identical to running MOUSE.COM each time you
+boot up your computer.
+
+Add the line below to your CONFIG.SYS file with a text editor:
+
+DEVICE=MOUSE.SYS
+
+or if you need to use the video interrupt option:
+
+DEVICE=MOUSE.SYS /V
+
+
+

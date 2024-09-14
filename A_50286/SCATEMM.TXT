@@ -1,0 +1,212 @@
+
+                      Chips and Technologies
+           DS82C235 SCATEMM.SYS EMM Driver Documentation
+
+
+
+
+I.   Introduction:
+
+This document describes the MS-DOS device driver SCATEMM.SYS, which
+in conjunction with a Chips and Technologies 82C235 "SCAT" chip
+or 82C236 "SCATsx" chip provides support for LIM EMS 4.0
+
+
+
+II.  Device Driver Installation
+
+This EMS driver is supplied as a device driver that can be loaded
+at DOS boot time.  The user is required to edit the CONFIG.SYS file
+so that it contains a line in the form of:
+
+          DEVICE = d:[path]\SCATEMM.SYS [options]
+
+where d: and [path] represent the drive and path where the driver
+is located.
+
+The driver is designed so that, under normal circumstances, it does
+not need any command line options in order to give satisfactory
+performance.  However, command line options are provided so that
+the driver may be tailored to a user's specific needs.
+
+Before installing the driver, you should run your system SETUP and
+make sure to set aside sufficient memory for your needs.  This
+memory should be designated as expanded memory.
+
+
+III. Command Line Parameters
+
+The following command line parameters are available for
+knowledgeable users who wish to tailor the driver for their own
+requirements.  Option names may be shortened to their first two
+characters.  Options should be separated by one or more spaces.
+Spaces are optional before and after the '-' and '=' symbols.
+
+
+ FRAME = aaaa
+      Specifies the page frame address (the address of the 64K
+      segment through which expanded memory is mapped.  "aaaa"
+      must be either D000 or E000.  Specifying FRAME will
+      override the automatic choice of page frame by the
+      driver.
+
+
+ EXCLUDE = xxxx [- cccc]
+      Specifies an area of memory which should not be under
+      the control of the SCATEMM.SYS driver. "xxxx" and "cccc"
+      specify the address or range of addresses of memory to
+      be excluded and should be in multiples of 16K (i.e. end
+      in 00).  EXCLUDE may be used several times on the driver
+      command line to exclude multiple blocks of memory,
+      though at least 64K of memory should remain above 640K
+      (A000).  The driver will find all RAM/ROM in the range
+      D000 - EFFF, and will adjust for them.
+
+
+
+ INCLUDE = xxxx [- cccc]
+      Specifies memory to be included under the control of the
+      SCATEMM.SYS driver.  Parameters are similar to EXCLUDE
+      above.
+
+
+
+ HANDLES = hhh
+      Specifies the number of handles and names available.
+      "hhh" must be in the range of 16 to 255, with the
+      default being 64.
+
+
+
+ IOADDR = aaa
+      Overrides the default base I/O address at which the
+      "SCAT/SCATsx" Chip should be configured.  aaa must be either
+      208 or 218.
+
+ DIAGS = xxx
+      Specifies whether EMS memory diagnostics are performed during
+      initialization of the driver.  "xxx" must be ON or OFF.  The
+      default is OFF.
+
+
+IV.  Error Messages
+
+
+ "Initialization Error. Memory Manager not Installed"
+      This is a generic error message that is accompanied by
+      another error message.  This means that for some reason
+      (given by the other error message) the EMM driver could
+      not be installed correctly.
+
+
+
+ "Cannot detect mapping hardware"
+      The EMM driver could not find a Chips 82C235 "SCAT" chip
+      or 82C236 "SCATsx" chip in the system.  Make sure that your
+      EMS is enabled. This error may indicate that you have the
+      wrong driver for your system.
+
+
+ "Problems encountered with memory initialization"
+      The EMM driver could not set up the page frame
+      correctly.  Make sure that there is at least one
+      contiguous 64K segment of unused memory space above 640K
+      (A000).
+
+
+
+ "Interrupt 67 Vector already allocated"
+      Some other driver has already allocated the EMS
+      interrupt vector.  Remove all other EMS drivers from
+      your CONFIG.SYS file.
+
+
+
+ "I/O address specified is not one of the permitted values"
+      The EMS mapper I/O address you indicated using the
+      IOADDR command line option is an invalid address.  Make
+      sure that it is either 208 or 218.
+
+
+
+ "An equals (=) sign was expected"
+      One of your SCATEMM.SYS command line options was not
+      immediately followed by an equals '=' sign.  Check your
+      CONFIG.SYS file to make sure the SCATEMM.SYS command
+      line is formatted correctly.
+
+
+
+ "Invalid HEX number or not divisible by 16"
+      One of your INCLUDE or EXCLUDE "xxxx" command line
+      arguments is incorrect.  Each "xxxx" argument for these
+      options must be divisible by 16 (ending in 00).
+
+
+
+ "Number of handles invalid or out range"
+      The value you specified for the HANDLES command line
+      option is invalid.  Make sure it is a decimal number
+      between 16 and 255.
+
+
+
+ "Invalid Page Frame Address"
+      The page frame address you specified is invalid.  The
+      page frame must start at either D000 or E000.
+
+
+
+ "No working memory can be found. EMM aborted"
+      The driver cannot find any memory set aside as expanded
+      memory.  Make sure to run your system SETUP, and set
+      aside some memory for expanded memory.
+
+
+
+ "Unrecognized command/option in command line"
+      The string displayed after this error message was found
+      to be invalid.  Edit your CONFIG.SYS to make sure this
+      invalid option is corrected.
+
+
+
+ "End address is less than starting address"
+      One of the "cccc" addresses specified for either the
+      INCLUDE or EXCLUDE options is less than the "xxxx" value
+      for that option.
+
+
+
+ "The command line is incomplete"
+      Options are incomplete on the SCATEMM.SYS command line.
+      Make sure that all command line options are correctly
+      formatted.
+
+
+
+ "Problems encountered in setting default page frame address"
+      The default page frame address found in your system CMOS
+      is invalid.  This is not a fatal error, if this occurs
+      the driver will use the default base address.  Make sure
+      to run your system SETUP and make sure that your EMS
+      base address is valid.
+
+
+
+ "Decimal number input overflow error"
+      The number of handles specified is an invalid number.
+      Edit your CONFIG.SYS and make sure that the parameter
+      for HANDLES is correctly formatted.
+
+ "Error EMS I/O not enabled"
+      EMS has not been enabled on the Chips 82C235 "SCAT" or
+      82C236 "SCATsx" ChipSet. Run your system SETUP and make sure EMS
+      has been enabled.
+
+ "The EMS hardware is disabled or not functional"
+      This is a generic error message that is accompanied
+      by another error message.  This means that for some
+      reason (given by the other error message) the EMS
+      hardware is not operating properly.
+
